@@ -5,6 +5,11 @@ struct Node{
     int data;
     struct Node *next;
 };
+struct Queue{
+    struct Node *front, *rear;
+};
+
+struct Queue *Q;
 
 void createNode(int val, struct Node ** n){
     (*n) = (struct Node*)malloc(sizeof(struct Node)); 
@@ -14,9 +19,15 @@ void createNode(int val, struct Node ** n){
 
 void push(int val, struct Node ** n){
     struct Node *node = NULL;
+    struct Node *iter = *n;
     createNode(val, &node);
-    node->next = *n;
-    *n = node;
+    while (iter->next!=NULL)
+    {
+        /* code */
+        iter = iter->next;
+    }
+    iter->next = node;
+    Q->rear = iter;
 }
 
 void pop(struct Node **n){
@@ -43,7 +54,7 @@ int main(){
     push(5,&n);
     printList(n);
     printf("\n");
-    pop(&n);
+    push(7,&n);
     printList(n);
     printf("\n");
 }

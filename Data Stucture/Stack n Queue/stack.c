@@ -23,10 +23,10 @@ void pop(struct Node **n){
     if(n == NULL){
         printf("** UNDERFLOW **\n");
     }
-    struct Node *head = (*n)->next;
     struct Node *top = *n;
+    int val = top->data;
+    *n = top->next;
     free(top);
-    *n = head;
 }
 
 void printList(struct Node *n){
@@ -42,6 +42,12 @@ int main(){
     printList(n);
     printf("\n");
     push(5,&n);
+    printList(n);
+    printf("\n");
+    push(7,&n);
+    printList(n);
+    printf("\n");
+    push(8,&n);
     printList(n);
     printf("\n");
     pop(&n);
