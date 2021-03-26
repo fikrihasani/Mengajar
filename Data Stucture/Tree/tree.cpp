@@ -47,6 +47,7 @@ void f(struct tnode *curr) {
         printf("char: %c\n",s[p]);
     }
 }
+
 void prefix(struct tnode *curr) {
 	printf( "%c\n", curr->chr );
 	if ( curr->left  != 0 ) prefix(curr->left);

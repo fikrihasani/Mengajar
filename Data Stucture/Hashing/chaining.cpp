@@ -11,12 +11,14 @@ struct Node{
 } *table[size], *node;
 
 int hash(char name[]){
-    return (name[0] - 'A')%size;
+    return (name[0] - 'a')%size;
 }
 
 void insertTable(char name[]){
+    // hashing dulu
     int hashVal = hash(name);
 
+    // init node
     node = (struct Node *)malloc(sizeof(struct Node));
     node->val = hashVal;
     strcpy(node->name, name);
@@ -36,6 +38,28 @@ void insertTable(char name[]){
     }else{
         table[hashVal] = node;
     }
+}
+
+int search(char key[]){
+    // logic traversal pada looping
+    int hashVal = hash(key);
+    // jika hashfunc itu menggunakan char pertama
+    if (strcmp(table[hashVal]->name,key) == 0)
+    {
+        /* code */
+        return 1;
+    }else{
+        //loop ke belakang
+        struct Node *curr = table[hashVal];
+        while (curr->next != NULL &&  strcmp(table[hashVal]->name,key)==0)
+        {
+            /* code */
+            curr = curr->next;
+        }
+        return 1;
+    }
+    
+    return -1;
 }
 
 void printData(){
