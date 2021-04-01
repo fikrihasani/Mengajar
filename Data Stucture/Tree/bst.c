@@ -46,7 +46,7 @@ void print(int level, char *pos, struct tnode *curr) {
 }
 
 // complete it yourself
-void delete(){
+void deleteNode(){
 
 
 }
