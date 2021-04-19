@@ -78,7 +78,7 @@ int folding(int key){
         // ubah ke int dan masukin ke total. 
         total = total + atoi(subdigit);
     }
-    return total;
+    return total % size;
     
 }
 

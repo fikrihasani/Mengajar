@@ -7,7 +7,15 @@ struct dll
     int data;
     struct dll *next;
     struct dll *prev;
-};
+} *head, *tail;
+
+struct dll * createNode(int x){
+    struct dll *node = (struct dll *)malloc(sizeof(struct dll));
+    node->data = x;
+    node->next = NULL;
+    node->prev = NULL;
+    return node;
+}
 
 void printList(struct dll *n) 
 { 
@@ -17,18 +25,62 @@ void printList(struct dll *n)
     } 
 } 
 
-int main(){
-    struct dll *head = NULL;
-    struct dll *tail = NULL;
+void insertEnd(int x){
+    if (head == NULL)
+    {
+        printf("something here\n");
+        /* code */
+        tail = head = createNode(x);
+    }else{
+        struct dll *node = createNode(x);
+        tail->next = node;
+        node->prev = tail;
+        tail = node;
+    }
+}
 
-    head = (struct dll *) malloc(sizeof(struct dll));
-    tail = (struct dll *) malloc(sizeof(struct dll));
-    head->data = 10;
-    head->next = NULL;
-    head->prev = NULL;
-    tail->data = 11;
-    tail->next = NULL;
-    tail->prev = head;
-    head->next = tail;
-    printList(head->next);
+void insertFront(int x){
+    if (head == NULL)
+    {
+        printf("something here\n");
+        /* code */
+        // head->data = x;
+        tail = head = createNode(x);
+    }else{
+        // create node
+        struct dll *tmp = createNode(x);        
+        tmp->next = head;
+        head = tmp;
+    }
+    
+}
+
+void printHead(){
+    struct dll *tmp = head;
+    while(tmp != NULL){
+        printf("%d\n",tmp->data);
+        tmp = tmp->next;
+    }
+}
+
+void printTail(){
+    struct dll *curr = tail;
+    while(curr != NULL){
+        printf("%d\n",curr->data);
+        curr = curr->prev;
+    }
+}
+
+int main(){
+    head = NULL;
+    tail = NULL;
+
+    insertEnd(10);
+    insertEnd(20);
+    insertEnd(1000);
+    // printf("%d\n",head->data);
+    printHead();
+    printf("\n");
+    printTail();
+
 }

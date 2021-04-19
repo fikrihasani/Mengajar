@@ -9,6 +9,8 @@ struct tnode
     struct tnode *right;
 } *root;
 
+int maxLevel = 1;
+
 struct tnode * newnode(int x){
     struct tnode *tmp = (struct tnode *)malloc(sizeof(struct tnode));
     tmp->data = x;
@@ -17,8 +19,11 @@ struct tnode * newnode(int x){
     return tmp;
 }
 
-void insert(struct tnode *curr, int x){
-    if (root == NULL)
+void insert(int level, struct tnode *curr, int x){
+    if(level > maxLevel){
+        printf("tidak dapat menambahkan data %d\n",x);
+    }else{
+   if (root == NULL)
     {
         /* code */
         root = newnode(x);
@@ -32,10 +37,11 @@ void insert(struct tnode *curr, int x){
             struct tnode *tmp = newnode(x);
             curr->right = tmp;
         }else if(curr->left != NULL && x < curr->data){
-            insert(curr->left,x);
+            insert(level+1, curr->left,x);
         }else if(curr->right != NULL && x > curr->data){
-            insert(curr->right,x);
+            insert(level+1, curr->right,x);
         }
+    }
     }
 }
 
@@ -52,14 +58,11 @@ void deleteNode(){
 }
 
 void main(){
-    struct tnode *curr = root;
-    insert(curr, 10);
-    curr = root;
-    insert(curr, 8);
-    curr = root;
-    insert(curr, 20);
-    curr = root;
-    insert(curr, 7);
+    insert(0,root, 10);
+    insert(0,root, 8);
+    insert(0,root, 20);
+    insert(0,root, 7);
+    insert(0,root, 4);
     print(0,"center",root);
 }
 
