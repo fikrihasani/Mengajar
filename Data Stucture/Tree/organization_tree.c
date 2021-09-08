@@ -43,7 +43,9 @@ int getLevel(int level, char nama[], struct tnode *curr){
 
 void compare(char personA[], char personB[]){
     int levelA = getLevel(0,personA,tree);
+    // levelA = 0
     int levelB = getLevel(0,personB,tree);
+    // levelB = 2
     if (levelA == -1 || levelB == -1)
     {
         /* code */
@@ -70,6 +72,7 @@ int main(){
     tmp = newnode("jali","ketua div cabang 1");
     tree->left->left = tmp;
     print(0,"root",tree);
+
     compare("saya","jali");
     free(tmp);
     free(tree);
