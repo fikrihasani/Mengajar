@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AppController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +17,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [AppController::class, 'index']);
+
+// handle middleware
+Route::group(['middleware'=>'auth'],function(){
+    Route::resource('book',BookController::class);
+    Route::resource('author',AuthorController::class);
 });
+
+Route::get('/login',[AuthController::class,'index'])->name('login');
+Route::post('/login',[AuthController::class,'login']);
+Route::get('/register',[AuthController::class,'registerForm']);
+Route::post('/register',[AuthController::class,'register']);
