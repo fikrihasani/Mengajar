@@ -18,7 +18,15 @@ int main(){
     ll = (struct Node *) malloc(sizeof(struct Node));
     ll->data = 5;
     ll->next = NULL;
+
+    ll->data = 6;
+    ll->next = NULL;
     printf("%d ",ll->data);
+
+    while (ll != NULL) { 
+        printf(" %d ", ll->data); 
+        ll = ll->next; 
+    } 
 
     // insert node setelah head
     // inisialisasi node

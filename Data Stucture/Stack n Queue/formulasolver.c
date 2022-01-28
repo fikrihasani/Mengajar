@@ -47,7 +47,7 @@ int main(){
     int final = 0;
     while (f[i])
     {
-        /* code */
+        // push ke stack
         if (isdigit(f[i]))
         {
             /* code */
@@ -55,11 +55,12 @@ int main(){
         }
         else
         {
-            printf("sekarang: %c\n",f[i]);
+            // printf("sekarang: %c\n",f[i]);
             int a = pop(&n);
             int b = pop(&n);
             int x;
-            printf("%d dan %d\n",a,b);
+            // 56+
+            // printf("%d dan %d\n",a,b);
             switch (f[i])
             {
             case '*'/* constant-expression */:

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define size 5
+#define size 8
 
 char data[size][12];
 
@@ -60,6 +60,7 @@ void printData(){
 }
 
 int main(){
+    // panjang string
     char name[12];
     int hashVal;
     while (1)
@@ -68,13 +69,13 @@ int main(){
         /* code */
         scanf("%s",&name);
         hashVal = hashing(name[0]);
-        printf("%d\n",hashVal);
+        printf("hasil hashing: %d\n",hashVal);
         if (strcmp(data[hashVal],"")==0)
         {
             /* code */
             strcpy(data[hashVal],name);
         }else{
-            // printf("ada data\n");
+            // pencarian
             int i = hashVal+1;
             int full = 0;
             while (strcmp(data[i],"")!=0)
@@ -89,13 +90,14 @@ int main(){
                 }
                 i = (i+1)%size;
             }
-            strcpy(data[i],name);
+            if(!full){
+                strcpy(data[i],name);
+            }
         }
-        system("cls");
+        // system("cls");
         printData();
     }
-    
-    
+       
     return 0;
     
 }

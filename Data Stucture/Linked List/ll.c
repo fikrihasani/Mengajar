@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+// array itu:
+// int data[100];
+// for (i = 0; i< 100; i++)
+
 struct Node { 
     int data; 
     struct Node *next; 
@@ -8,7 +13,6 @@ struct Node {
   
 // This function prints contents of linked list starting from 
 // the given node 
-
 struct Node * createNode (int val, struct Node *n){
     n = (struct Node*)malloc(sizeof(struct Node)); 
     n->data = val;
@@ -17,7 +21,8 @@ struct Node * createNode (int val, struct Node *n){
 }
 
 
-
+// traversal list
+// melakukan iterasi ke setiap node
 void printList(struct Node *n) 
 { 
     while (n != NULL) { 
@@ -26,14 +31,26 @@ void printList(struct Node *n)
     } 
 } 
 
+// insert -> push. new node didepan old node
+// insert first
+// how to insert first in array? =>new element must be in index 0
+// dari index 1 -> data N. 
+// kita geser arr[i+1] = arr[i]
+// O(n+1)
+// arr[0] = val
 void push(int val, struct Node **n){
     struct Node *new_node = NULL;
     new_node = createNode(val, new_node);
+    // disini untuk point ke next node
     new_node->next = *n;
+    // disini kita pindahkan value ke node baru
     *n = new_node;
 }
 
+// hapus node dari linked list
+// how to delete data from array?
 void delete(int val, struct Node **n){
+    // buat node 
     struct Node *curr = *n;
     while(curr->next->data != val){
         curr = curr->next;
@@ -43,9 +60,13 @@ void delete(int val, struct Node **n){
     free(del);
 }
 
+// insert data after old node
+// typical insert data for array
 void insertLast(int val, struct Node **n){
     struct Node *tmpNode = NULL; 
     struct Node *tmp = *n;
+
+    // cari node terakhir
     while(tmp->next != NULL){
         tmp = tmp->next;
     }
@@ -54,6 +75,10 @@ void insertLast(int val, struct Node **n){
     tmp->next = tmpNode;
 }
  
+// insert list by position
+// algo for array:
+// data x sampai N  digeser, N = data total yang ada.
+// arr[X] = new value
 void insertList(int val, struct Node** n, int pos){
     int i = 1;
     struct Node *tmp = *n;

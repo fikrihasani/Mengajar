@@ -17,7 +17,8 @@ int hash(char name[]){
 void insertTable(char name[]){
     // hashing dulu
     int hashVal = hash(name);
-
+    printf("hasil hashing: %d\n",hashVal);
+    
     // init node
     node = (struct Node *)malloc(sizeof(struct Node));
     node->val = hashVal;
@@ -95,7 +96,7 @@ int main(){
     {
         gets(nama);
         insertTable(nama);
-        system("cls");
+        // system("cls");
         printData();
         /* code */
     } while (1);
