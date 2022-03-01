@@ -4,174 +4,156 @@
 struct tnode
 {
     /* data */
-    int data;
+    int key;
     struct tnode *left;
     struct tnode *right;
-} *root;
+} * root;
 
-int maxLevel = 4;
 
-struct tnode * newnode(int x){
-    struct tnode *tmp = (struct tnode *)malloc(sizeof(struct tnode));
-    tmp->data = x;
+struct tnode * createNode(int val){
+    struct tnode *tmp = (struct tnode *) malloc(sizeof(struct tnode));
+    tmp->key = val;
     tmp->left = NULL;
     tmp->right = NULL;
     return tmp;
 }
 
-void insert(int level, struct tnode *curr, int x){
-    if(level > maxLevel){
-        printf("tidak dapat menambahkan data %d\n",x);
-    }else{
-   if (root == NULL)
+void inorder(int lev,struct tnode* root)
+{
+	if (root != NULL) {
+		inorder(lev+1, root->left);
+		printf("level: %d - data: %d\n", lev,root->key);
+		inorder(lev+1, root->right);
+	}
+}
+
+
+void preorder(int lev,struct tnode* root)
+{
+	if (root != NULL) {
+		printf("level: %d - data: %d\n", lev,root->key);
+		inorder(lev+1, root->left);
+		inorder(lev+1, root->right);
+	}
+}
+
+void insert(int val, struct tnode * node){
+    if (!root)
     {
         /* code */
-        root = newnode(x);
-    }else{
-        if (curr->left == NULL && x < curr->data)
-        {
-            /* code */
-            struct tnode *tmp = newnode(x);
-            curr->left = tmp;
-        }else if(curr->right == NULL && x > curr->data){
-            struct tnode *tmp = newnode(x);
-            curr->right = tmp;
-        }else if(curr->left != NULL && x < curr->data){
-            insert(level+1, curr->left,x);
-        }else if(curr->right != NULL && x > curr->data){
-            insert(level+1, curr->right,x);
-        }
-    }
-    }
-}
-
-void print(int level, char *pos, struct tnode *curr) {
-	printf( "level: %d - %s - %d\n", level, pos, curr->data );
-	if ( curr->left  != 0 ) print(level+1, "left",curr->left);
-	if ( curr->right != 0 ) print(level+1, "right",curr->right);
-}
-
-
-void deleteNodeRecursively(struct tnode* curr, struct tnode* parent){
-    // condition 1 = only one node
-    printf("going here inside, root: %d\n",root->data);
-    if (curr->left == NULL && curr->right == NULL)
+        root = createNode(val);
+        return;
+    }else
     {
-        printf("delete leaf node\n");
-        if (curr == root)
+        if (val < node->key)
         {
-            /* code */
-            free(curr);
-            root = NULL;
-            printf("The root");
-        }
-        printf("going here inside, root: %d\n",root->data);
+            if (!node->left)
+            {
+                /* code */
+                struct tnode * tmp = createNode(val);
+                node->left = tmp;
+            }else{
+                /* code */
+                insert(val, node->left);
+            }
 
-        // else{
-        //     if (curr == parent->left)
-        //     {
-        //         parent->left = NULL;
-        //         /* code */
-        //     }else{
-        //         parent->right = NULL;
-        //     }
-        //     struct tnode *tmp = curr;
-        //     free(tmp);            
-        // }
-    }else if(curr->left == NULL){
-        if (curr == root)
-        {
-            /* code */
-            root = curr->right;
-        }
-        else if(curr->data > parent->data)
-        {
-            /* code */
-            parent->right = curr->right;
-        }else
-        {
-            parent->left = curr->right;
-        }
-        free(curr);
-    }else if(curr->right = NULL)
-    {
-        if (curr == root)
-        {
-            /* code */
-            root = curr->left;
-        }
-        else if(curr->data > parent->data)
-        {
-            /* code */
-            parent->right = curr->left;
-        }else
-        {
-            parent->left = curr->left;
+        }else if(val > node->key){
+            if (!node->right)
+            {
+                /* code */
+                struct tnode * tmp = createNode(val);
+                node->right = tmp;
+            }else{
+                /* code */
+                insert(val, node->right);
+            }
         }
         
-        free(curr);
-        
-    }else{
-        printf("going here, the data: %d\n",curr->data);
-        print(0,"center",root);
-        printf("\n");
-        struct tnode * p = curr->left;
-        struct tnode * pp = curr;
-        while (p->right != NULL)
-        {
-            /* code */
-            pp = p;
-            p = p->right;
-        }
-        printf("going here, curr: %d\n",curr->data);
-        printf("going here, root: %d\n",root->data);
-        printf("going here, parent: %d\n",pp->data);
-        printf("going here, data: %d\n",p->data);
-        int data = p->data;
-        printf("going here, root: %d\n",root->data);
-        deleteNodeRecursively(p,pp);
-        printf("going here after, root: %d\n",root->data);
-        print(0,"center",root);
-        printf("\n");
-        curr->data = data;
     }
-        
 }
 
-// complete it yourself
-void deleteNode(struct tnode *root, int x){
-    struct tnode *curr = root;
-    struct tnode *parent = NULL;
-    while(curr != NULL){
-        if(x == curr->data) break;
-        parent = curr;
-        curr = ( x < curr->data) ? curr->left : curr->right;
-    }
-    printf("this is the data %d\n",curr->data);
-    print(0,"center",root);
-    // printf("this is the parent %d\n",parent->data);
-
-
-    if (curr != NULL)
+struct tnode * getMaxLeft(struct tnode * node){
+    struct tnode * search = node;
+    while (search->right)
     {
         /* code */
-        deleteNodeRecursively(curr,parent);
+        search = search->right;
+    }
+    return search;
+}
+
+
+struct tnode * getMinRight(struct tnode * node){
+    struct tnode * search = node;
+    while (search->left)
+    {
+        /* code */
+        search = search->left;
+    }
+    return search;
+}
+
+struct tnode * delete(int val, struct tnode * node){
+    if (!root)
+    {
+        printf("empty tree");
+        return NULL;
     }
 
+    // cari dulu
+    if (val > node->key)
+    {
+        /* code */
+        node->right = delete(val, node->right);
+    }else if(val < node->key){
+        node->left = delete(val, node->left);
+    }else{ 
+        if (!node->left && !node->right)
+        {
+            /* code */
+            free(node);
+            return NULL;
+        }else
+        if (!node->left)
+        {
+            /* code */
+            return node->right;
+        }else if(!node->right){
+            return node->left;
+        }else{
+            // double child
+            struct tnode *tmp = getMaxLeft(node->left);
+            node->key = tmp->key;
+            node->left = delete(tmp->key,node->left);
+        }
+    }
+    return node;
 }
 
+int main(int argc, char const *argv[])
+{
+    insert(30,root);
+    insert(15,root);
+    insert(7,root);
+    insert(26,root);
+    insert(19,root);
+    insert(17,root);
+    insert(21,root);
+    insert(37,root);
+    insert(34,root);
+    insert(31,root);
+    insert(45,root);
+    insert(42,root);
 
-void main(){
-    insert(0,root, 50);
-    insert(0,root, 30);
-    insert(0,root, 40);
-    insert(0,root, 70);
-    insert(0,root, 60);
-    insert(0,root, 80);
+    inorder(0,root);
+    printf("\n\n");
+    // 
+    printf("after delete:\n");
+    delete(30,root);
+    inorder(0,root);
 
-    print(0,"center",root);
-    deleteNode(root,30);
-    print(0,"center",root);
+    printf("\n\n");
+    // preorder(0,root);
+
+    return 0;
 }
-
-

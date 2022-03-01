@@ -30,12 +30,12 @@ void inorder(int lev,struct node* root)
 	}
 }
 
-void predorder(struct node* root)
+void preorder(struct node* root)
 {
 	if (root != NULL) {
 		printf("%d ", root->key);
-		predorder(root->left);
-		predorder(root->right);
+		preorder(root->left);
+		preorder(root->right);
 	}
 }
 
@@ -138,6 +138,8 @@ struct node* deleteNode(struct node* root, int key)
 		// Get the inorder successor
 		// (smallest in the right subtree)
 		struct node* temp = minValueNode(root->right);
+		
+		// if using the right subtree, and search for leftmost sub tree
 		// struct node* temp = maxValueNode(root->left);
 
 		// Copy the inorder
@@ -146,6 +148,7 @@ struct node* deleteNode(struct node* root, int key)
 
 		// Delete the inorder successor
 		root->right = deleteNode(root->right, temp->key);
+		// if using the right subtree, and search for leftmost sub tree
 		// root->left = deleteNode(root->left, temp->key);
 	}
 	return root;
@@ -158,14 +161,17 @@ int main()
 		  50
 		/	 \
 	   30	 70
-	  / \   / \
-	 20 40 60 80 
+	  /     / \
+	 20    60 80 
+	/ \
+   10  25
     */
 	struct node* root = NULL;
 	root = insert(root, 50);
 	root = insert(root, 30);
 	root = insert(root, 20);
-	root = insert(root, 40);
+	root = insert(root, 10);
+	root = insert(root, 25);
 	root = insert(root, 70);
 	root = insert(root, 60);
 	root = insert(root, 80);
@@ -173,10 +179,10 @@ int main()
 	printf("inorder traversal of the given tree \n");
 	inorder(0,root);
 
-	printf("\nDelete 20\n");
-	root = deleteNode(root, 20);
-	printf("inorder traversal of the modified tree \n");
-	inorder(0,root);
+	// printf("\nDelete 20\n");
+	// root = deleteNode(root, 20);
+	// printf("inorder traversal of the modified tree \n");
+	// inorder(0,root);
 
 	printf("\nDelete 30\n");
 	root = deleteNode(root, 30);
