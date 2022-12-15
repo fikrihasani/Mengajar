@@ -1,0 +1,3 @@
+this is statement that will be written
+today we will learn about file
+today is tuesday
