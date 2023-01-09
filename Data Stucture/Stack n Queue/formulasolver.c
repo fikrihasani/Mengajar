@@ -7,43 +7,44 @@ struct Node{
     struct Node *next;
 };
 
+struct Node * stack = NULL;
 
-void printList(struct Node *n){
-    while(n != NULL){
-        printf("%d ", n->data);
-        n = n->next;
+void printList(){
+    struct Node *iter = stack;
+    while(iter != NULL){
+        printf("%d ", iter->data);
+        iter = iter->next;
     }
+    printf("\n");
 }
 
-void createNode(int val, struct Node ** n){
-    (*n) = (struct Node*)malloc(sizeof(struct Node)); 
-    (*n)->data = val;
-    (*n)->next = NULL;
+struct Node * createNode(int val){
+    struct Node *ptr = (struct Node *)malloc(sizeof(struct Node));
+    ptr->data = val;
+    ptr->next = NULL;
+    return ptr;
 }
 
-void push(int val, struct Node ** n){
-    struct Node *tmpNode; 
-    struct Node *tmp = *n;
-    createNode(val, &tmpNode);
-    tmpNode->next = *n;
-    (*n) = tmpNode;
+void push(int val){
+    struct Node * tmpNode = createNode(val); 
+    tmpNode->next = stack;
+    stack = tmpNode;
 }
 
-int pop(struct Node **n){
-    struct Node *top = *n;
+int pop(){
+    struct Node * top = stack;
     int val = top->data;
-    *n = top->next;
+    stack = top->next;
     free(top);
     return val;
 }
 
 
 int main(){
-    struct Node *n = NULL;
     char f[200];
     scanf("%s",&f);
     int i = 1;
-    createNode(f[0]-'0',&n);
+    stack = createNode(f[0]-'0');
     int final = 0;
     while (f[i])
     {
@@ -51,13 +52,13 @@ int main(){
         if (isdigit(f[i]))
         {
             /* code */
-            push(f[i] - '0',&n);
+            push(f[i] - '0');
         }
         else
         {
             // printf("sekarang: %c\n",f[i]);
-            int a = pop(&n);
-            int b = pop(&n);
+            int a = pop();
+            int b = pop();
             int x;
             // 56+
             // printf("%d dan %d\n",a,b);
@@ -67,25 +68,25 @@ int main(){
                 /* code */
                 x = b*a;
                 printf("%d * %d = %d\n",b,a,x);
-                push(x,&n);
+                push(x);
                 break;
             case '+'/* constant-expression */:
                 /* code */
                 x = b+a;
                 printf("%d + %d = %d\n",b,a,x);
-                push(x,&n);
+                push(x);
                 break;
             case '-'/* constant-expression */:
                 /* code */
                 x = b-a;
                 printf("%d - %d = %d\n",b,a,x);
-                push(x,&n);
+                push(x);
                 break;
             case '/'/* constant-expression */:
                 /* code */
                 x = b/a;
                 printf("%d / %d = %d\n",b,a,x);
-                push(x,&n);
+                push(x);
                 break;
             default:
                 exit;
@@ -93,11 +94,11 @@ int main(){
             }
         }
         i++;
-        printList(n);
+        printList();
         printf("\n");
     }
     // printList(n);
-    final = pop(&n);
+    final = pop();
     printf("%d",final);
     return 0;
 }
