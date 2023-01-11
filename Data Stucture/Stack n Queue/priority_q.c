@@ -46,8 +46,8 @@ void enque(int val){
         if(tmp->val < queue->front->val){
             tmp->next = queue->front;
             queue->front = tmp;
-        }else if(tmp->val > queue->rear->val){
-        // case 2, when val > rear->val
+        }else if(tmp->val >= queue->rear->val){
+            // case 2, when val > rear->val
             queue->rear->next = tmp;
             queue->rear = tmp;
         }else{
@@ -61,8 +61,6 @@ void enque(int val){
             tmp->next = iter->next;
             iter->next = tmp;
         }
-
-
     }
 }
 
@@ -105,6 +103,7 @@ int main(){
     printQ();
     enque(7);
     enque(4);
+    enque(5);
     printQ();
     return 0;
 }
