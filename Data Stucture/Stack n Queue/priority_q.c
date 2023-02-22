@@ -1,11 +1,14 @@
 //linked list implementation
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct node
 {
     /* data */
-    int val;
+    int prio;
+    char name[30];
+    char cond[15];
     // menyimpan next pointer
     struct node * next;
 };
@@ -26,36 +29,51 @@ struct q * createQ(){
     return tmp;
 }
 
+int convertCond(char cond[]){
+    if(strcmp(cond,"CRITICAL")==0){
+        return 4;
+    }else if(strcmp(cond,"SERIOUS") == 0){
+        return 3;
+    }else if(strcmp(cond,"FAIR") == 0){
+        return 2;
+    }else{
+        return 1;
+    }
+
+}
 // inisiasi qnode
-struct node * createNode(int val){
+struct node * createNode(char name[], char cond[]){
     struct node * tmp = (struct node *)malloc(sizeof(struct node));
-    tmp->val = val;
+    tmp->prio = convertCond(cond);
+    strcpy(tmp->name,name);
+    strcpy(tmp->cond,cond);
     tmp->next = NULL;
     return tmp;
 }
 
 // push atau enque (isi data)
-void enque(int val){
+void enque(char name[],char cond[]){
     // membuat node baru
-    struct node * tmp  = createNode(val);
+    struct node * tmp  = createNode(name,cond);
     // cek kosong
     if(queue->front == NULL && queue->rear == NULL){
         queue->front = queue->rear = tmp;
     }else{
-        //case 1, when val is < front->val
-        if(tmp->val < queue->front->val){
+        //case 1, when val is > front->val
+        if(tmp->prio > queue->front->prio){
             tmp->next = queue->front;
             queue->front = tmp;
-        }else if(tmp->val >= queue->rear->val){
-            // case 2, when val > rear->val
+        }else if(tmp->prio <= queue->rear->prio){
+            // case 2, when val < rear->val
             queue->rear->next = tmp;
             queue->rear = tmp;
         }else{
             // case 3 diluar semua
             struct node * iter = queue->front;
-            while (iter->next->val < tmp->val)
+            while (iter->next->prio >= tmp->prio)
             {
                 /* code */
+                printf("%d\n",iter->prio);
                 iter = iter->next;
             }
             tmp->next = iter->next;
@@ -70,7 +88,7 @@ void printQ(){
     while (iter)
     {
         /* code */
-        printf("%d ",iter->val);
+        printf("%s ",iter->name);
         iter = iter->next;
     }
     printf("\n");
@@ -97,13 +115,42 @@ void deque(){
 
 int main(){
     //inisiasi queue dan segala isinya
+    int N;
+    scanf("%d",&N);
+    char c1[10], c2[30],c3[10];
     queue = createQ();
-    enque(5);
-    enque(8);
-    printQ();
-    enque(7);
-    enque(4);
-    enque(5);
-    printQ();
+    while (N > 0)
+    {
+        /* code */
+        //command
+        scanf("%s",c1);
+        if(strcmp(c1,"ADD") == 0){
+            scanf("%s",c2);
+            scanf("%s",c3);
+            printf("%s - %s - %s\n",c1,c2,c3);
+            enque(c2,c3);
+            printQ();
+        }else if(strcmp(c1,"CALL") == 0){
+            if(strcmp(queue->front->cond,"CRITICAL") == 0){
+                printf("%s is in the Emergency Room\n",queue->front->name);
+            }else if(strcmp(queue->front->cond,"SERIOUS") == 0){
+                printf("%s is in the Examination Room\n",queue->front->name);
+            }else{
+                printf("%s is in the Consultation Room\n",queue->front->name);
+            }
+            deque();
+            printQ();
+        }
+        N--;
+    }
+
+    
+    // enque(5);
+    // enque(8);
+    // printQ();
+    // enque(7);
+    // enque(4);
+    // enque(5);
+    // printQ();
     return 0;
 }

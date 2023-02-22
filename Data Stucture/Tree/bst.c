@@ -100,12 +100,17 @@ struct tnode * delete(int val, struct tnode * node){
         return NULL;
     }
 
-    // cari dulu
+    if(val < node->key && !node->left || val > node->key && !node->right){
+        return node;
+    }
+    
     if (val > node->key)
     {
         /* code */
+        printf("Go right\n");
         node->right = delete(val, node->right);
     }else if(val < node->key){
+        printf("Go left\n");
         node->left = delete(val, node->left);
     }else{ 
         if (!node->left && !node->right)
@@ -149,7 +154,7 @@ int main(int argc, char const *argv[])
     printf("\n\n");
     // 
     printf("after delete:\n");
-    delete(30,root);
+    delete(5,root);
     inorder(0,root);
 
     printf("\n\n");
