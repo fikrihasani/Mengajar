@@ -1,9 +1,11 @@
 #include <stdio.h>
+#include <math.h>
 #include <stdlib.h>
 #include <ctype.h>
 
+
 struct Node{
-    int data;
+    double data;
     struct Node *next;
 };
 
@@ -12,28 +14,28 @@ struct Node * stack = NULL;
 void printList(){
     struct Node *iter = stack;
     while(iter != NULL){
-        printf("%d ", iter->data);
+        printf("%.2lf", iter->data);
         iter = iter->next;
     }
     printf("\n");
 }
 
-struct Node * createNode(int val){
+struct Node * createNode(double val){
     struct Node *ptr = (struct Node *)malloc(sizeof(struct Node));
     ptr->data = val;
     ptr->next = NULL;
     return ptr;
 }
 
-void push(int val){
+void push(double val){
     struct Node * tmpNode = createNode(val); 
     tmpNode->next = stack;
     stack = tmpNode;
 }
 
-int pop(){
+double pop(){
     struct Node * top = stack;
-    int val = top->data;
+    double val = top->data;
     stack = top->next;
     free(top);
     return val;
@@ -42,10 +44,10 @@ int pop(){
 
 int main(){
     char f[200];
-    scanf("%s",&f);
+    scanf("%s",f);
     int i = 1;
     stack = createNode(f[0]-'0');
-    int final = 0;
+    double final = 0;
     while (f[i])
     {
         // push ke stack
@@ -57,35 +59,41 @@ int main(){
         else
         {
             // printf("sekarang: %c\n",f[i]);
-            int a = pop();
-            int b = pop();
-            int x;
+            double a = pop();
+            double b = pop();
+            double x;
             // 56+
-            // printf("%d dan %d\n",a,b);
+            // printf("%.2lf dan %.2lf\n",a,b);
             switch (f[i])
             {
             case '*'/* constant-expression */:
                 /* code */
                 x = b*a;
-                printf("%d * %d = %d\n",b,a,x);
+                printf("%.2lf * %.2lf = %.2lf\n",b,a,x);
                 push(x);
                 break;
             case '+'/* constant-expression */:
                 /* code */
                 x = b+a;
-                printf("%d + %d = %d\n",b,a,x);
+                printf("%.2lf + %.2lf = %.2lf\n",b,a,x);
                 push(x);
                 break;
             case '-'/* constant-expression */:
                 /* code */
                 x = b-a;
-                printf("%d - %d = %d\n",b,a,x);
+                printf("%.2lf - %.2lf = %.2lf\n",b,a,x);
                 push(x);
                 break;
             case '/'/* constant-expression */:
                 /* code */
                 x = b/a;
-                printf("%d / %d = %d\n",b,a,x);
+                printf("%.2lf / %.2lf = %.2lf\n",b,a,x);
+                push(x);
+                break;
+            case '^'/* constant-expression */:
+                /* code */
+                x = pow(b,a);
+                printf("%.2lf ^ %.2lf = %.2lf\n",b,a,x);
                 push(x);
                 break;
             default:
@@ -99,6 +107,6 @@ int main(){
     }
     // printList(n);
     final = pop();
-    printf("%d",final);
+    printf("%.2lf",final);
     return 0;
 }

@@ -8,6 +8,7 @@ struct tnode{
     int height;
 };
 
+int delExist = 1;
 struct tnode * root = NULL;
 
 struct tnode * initNode(int val){
@@ -26,8 +27,6 @@ int height(struct tnode * node){
 int max(int a, int b){
     return (a > b) ? a : b;
 }
-
-
 
 int updateHeight(struct tnode * node){
     //algorithm
@@ -68,6 +67,17 @@ struct tnode * leftRotate(struct tnode * t){
 
     return s;
 }
+
+//get right most predecessor of its right child
+struct tnode* getMaxLeft(struct tnode * curr){
+    struct tnode * iter = curr->left;
+    while (iter->right)
+    {
+        /* code */
+        iter = iter->right;
+    }
+    return iter;
+}
 struct tnode * insert(struct tnode * curr, int x){
     //jika curr = null
     if(!curr){
@@ -98,7 +108,60 @@ struct tnode * insert(struct tnode * curr, int x){
     }else if(height(curr->right) - height(curr->left) > 1){
         return leftRotate(curr);
     }
+    return curr;
+}
 
+//delete function
+struct tnode * delete(struct tnode * curr, int x){
+    //cek kondisi jika element tidak ada. 
+    if(!curr){
+        delExist =0;
+        return NULL;
+    }
+
+    //recursive iteration delete ke leaf
+    if(x < curr->value){
+        curr->left = delete(curr->left, x);
+    }else if(x > curr->value){
+        curr->right = delete(curr->right, x);
+    }else{
+        if(!curr->left && !curr->right){
+            free(curr);
+            return NULL;
+        }else if(!curr->left){
+            return curr->right;
+        }else if(!curr->right){
+            return curr->left;
+        }else{
+            struct tnode * tmp =getMaxLeft(curr);
+            curr->value = tmp->value;
+            curr->left = delete(curr->left, tmp->value);
+        }
+    }
+    //update height saat itu di curr
+    curr->height = updateHeight(curr);
+
+    //cek apakah tidak seimbang
+    //double roration left right case
+    if(height(curr->left) - height(curr->right) > 1 && height(curr->left->left) - height(curr->left->right) < 0){
+        //left right nya ngapain
+        curr->left =leftRotate(curr->left);
+        return rightRotate(curr);
+    }else if(height(curr->left) - height(curr->right) < -1 && height(curr->right->left) - height(curr->right->right) > 0){
+        //right left
+        curr->right = rightRotate(curr->right);
+        return leftRotate(curr);
+    }else if (height(curr->left) - height(curr->right) > 1)
+    {
+        /* code */
+        return rightRotate(curr);
+    }else if (height(curr->left) - height(curr->right) < -1)
+    {
+        /* code */
+        return leftRotate(curr);
+    }
+    
+    //doule rotatin right left case
     return curr;
 }
 
@@ -110,9 +173,16 @@ void inorder(int lev, struct tnode *curr){
 }
 int main(){
     root = insert(root, 30);
-    root = insert(root, 40);
+    root = insert(root, 20);
+    root = insert(root, 50);
+    root = insert(root, 10);
     root = insert(root, 35);
+    root = insert(root, 100);
+    root = insert(root, 33);
+    inorder(0,root);
+    printf("\n");
 
+    root = delete(root, 30);
     inorder(0,root);
     return 0;
 }
