@@ -32,9 +32,7 @@ struct tnode * search(struct tnode * curr, int x){
     }else if(x == curr->val){
         //jika x == curr->val maka return
         return curr;
-    }
-    
-
+    }  
 }
 
 //insert
