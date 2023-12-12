@@ -32,7 +32,9 @@ struct tnode * search(struct tnode * curr, int x){
     }else if(x == curr->val){
         //jika x == curr->val maka return
         return curr;
-    }  
+    }
+    
+
 }
 //count height tree
 int heightTree(struct tnode * curr){
@@ -52,6 +54,7 @@ int heightTree(struct tnode * curr){
 //void untuk count node with 2 child
 //global variable:
 int countChild = 0;
+int countleaf = 0;
 void count2child(struct tnode *curr){
     if(curr == NULL){
         return;
@@ -61,6 +64,18 @@ void count2child(struct tnode *curr){
         }
         count2child(curr->left);
         count2child(curr->right);
+    }
+}
+
+void countLeaf(struct tnode *curr){
+    if(curr == NULL){
+        return;
+    }else{
+        if(!curr->left && !curr->right){
+            countleaf++;
+        }
+        countLeaf(curr->left);
+        countLeaf(curr->right);
     }
 }
 //insert
@@ -153,17 +168,11 @@ int main(){
     insert(root, 4);
     inorder(0,root);
     printf("\n");
-    printf("%d\n",getMaxLeft(root)->val);
-    printf("input integer data to be deleted: ");
-    int y;
-    scanf("%d",&y);
-    //delete node dengan data y
-    // delete(root, y);
-    // inorder(0,root);
-    // printf("data ada? %d",delExist);
     printf("heigth: %d\n",heightTree(root));
     count2child(root);
-    printf("total node 2 child: %d",countChild);
+    printf("total node 2 child: %d\n",countChild);
+    countLeaf(root);
+    printf("total leaf: %d",countleaf);
     printf("\n");
     return 0;
 }
