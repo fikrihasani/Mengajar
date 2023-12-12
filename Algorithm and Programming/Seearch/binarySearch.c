@@ -1,43 +1,30 @@
 #include <stdio.h>
 
-int binarySearch(int v[], int hi, int To_Find)
-{
-	int lo = 0;
-	int mid;
-	// This below check covers all cases , so need to check
-	// for mid=lo-(hi-lo)/2
-	while (hi - lo > 1) {
-		int mid = (hi + lo) / 2;
-		if (v[mid] < To_Find) {
-			lo = mid + 1;
+int search(int data[], int l, int r, int target){
+	while(l <= r){
+		int m = (l+r)/2;
+
+		if(data[m] == target){
+			return m;
 		}
-		else {
-			hi = mid;
+
+		if(data[m] > target){
+			r = m-1;
+		}
+
+		if(data[m] < target){
+			l = m+1;
 		}
 	}
-	if (v[lo] == To_Find) {
-		printf("Found At Index %d \n",lo);
-	}
-	else if (v[hi] == To_Find) {
-		printf("Found At Index %d \n",hi);
-	}
-	else {
-		printf("not found\n");
-	}
+	return -1;
 }
 
-int main()
-{
-    for(int i = 0; i<10; i++){
-        printf("%d\n",rand()%20);
-    }
-	int v[] = { 1, 3, 4, 5, 6 };
-    int hi = (int)sizeof(v)/sizeof(v[0]) -1;
-	int To_Find = 1;
-	binarySearch(v, hi, To_Find);
-	To_Find = 6;
-	binarySearch(v,hi, To_Find);
-	To_Find = 10;
-	binarySearch(v, hi,To_Find);
+
+int main(){
+	int data[] = {4,6,8,14,15,16,17,18,19,20};
+	int target = 1;
+	int idx = search(data, 0,9,target);
+	printf("%d\n",idx);
 	return 0;
+
 }
