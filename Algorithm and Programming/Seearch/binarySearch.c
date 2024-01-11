@@ -2,16 +2,21 @@
 #include <stdlib.h>
 #include <math.h>
 
-int search(int data[], int l, int r, int target){
-	while(l <= r){
-		int m = (l+r)/2;
-
-		if(data[m] == target){
-			return m;
+int binarySearch(int v[], int hi, int To_Find)
+{
+	int lo = 0;
+	int mid;
+	// This below check covers all cases , so need to check
+	// for mid=lo-(hi-lo)/2
+	while (hi - lo > 1) {
+		int mid = (hi + lo) / 2;
+		if (v[mid] < To_Find) {
+			lo = mid + 1;
 		}
 		else {
 			hi = mid;
 		}
+		// printf("lo: %d - mid: %d - hi: %d\n",lo, mid, hi);
 	}
 	if (v[lo] == To_Find) {
 		// printf("Found At Index %d \n",lo);
@@ -22,11 +27,10 @@ int search(int data[], int l, int r, int target){
 		return hi;
 	}
 	else {
-		printf("not found\n");
+		// printf("not found\n");
 		return -1;
 	}
 }
-
 int main()
 {
 	int Q, noQ;
